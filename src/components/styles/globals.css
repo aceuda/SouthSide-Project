@@ -1,0 +1,6 @@
+body {
+    margin: 0;
+    font-family: var(--font-primary);
+    background: var(--white);
+    color: var(--black);
+}
