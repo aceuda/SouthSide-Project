@@ -1,0 +1,54 @@
+.admin-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.admin-form-card {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-form-card input,
+.admin-form-card textarea {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.admin-form-card button {
+    padding: 10px;
+    background: #111;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-product-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-product-list th,
+.admin-product-list td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+.admin-product-list button {
+    margin-right: 10px;
+    padding: 6px 10px;
+    background: #111;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}

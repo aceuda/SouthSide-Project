@@ -1,18 +1,26 @@
 import React from "react";
-import "./Footer.css";
+import { Link } from "react-router-dom";
+import "../../css/Footer.css";
 
-function Footer() {
+const Footer = () => {
     return (
         <footer className="footer">
-            <p>© 2025 SouthSide Apparel</p>
-
-            <nav className="footer-links">
-                <a href="/privacy">Privacy</a>
-                <a href="/shipping">Shipping</a>
-                <a href="/returns">Returns</a>
-            </nav>
+            <div className="footer-inner">
+                <div className="footer-brand">
+                    <h3>SouthSide Apparel</h3>
+                    <p>Street-ready styles, everyday comfort.</p>
+                </div>
+                <div className="footer-links">
+                    <Link to="/privacy">Privacy Policy</Link>
+                    <Link to="/shipping">Shipping</Link>
+                    <Link to="/returns">Return Policy</Link>
+                </div>
+                <p className="footer-copy">
+                    © {new Date().getFullYear()} SouthSide Apparel. All rights reserved.
+                </p>
+            </div>
         </footer>
     );
-}
+};
 
 export default Footer;

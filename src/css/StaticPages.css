@@ -1,0 +1,9 @@
+.static-page {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 20px 18px;
+    background: #ffffff;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
