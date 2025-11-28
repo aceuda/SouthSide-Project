@@ -1,0 +1,90 @@
+/* PrivacyPolicyPage.css */
+
+/* Universal Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: 'Roboto', sans-serif;  /* Clean, modern font */
+  background-color: #f7f7f7;  /* Soft grey background for contrast */
+  color: #333;  /* Standard text color */
+  line-height: 1.7;  /* Improved line height for better readability */
+}
+
+/* Main container for static page content */
+.static-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #ffffff; /* White background */
+  border-radius: 12px; /* Rounded corners for a soft edge */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Deeper shadow for more elevation */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect to elevate the box */
+.static-page:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15); /* Deeper shadow when hovered */
+}
+
+/* Title styling */
+.static-page h1 {
+  font-size: 2.5rem;  /* Larger font for a more commanding presence */
+  color: #222;  /* Dark text for strong contrast */
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;  /* Slight letter-spacing for clean spacing */
+  text-transform: uppercase;  /* Capitalized for professional look */
+  border-bottom: 2px solid #eee;  /* Soft line below the title for separation */
+  padding-bottom: 10px;
+}
+
+/* Paragraph text styling */
+.static-page p {
+  font-size: 1.15rem; /* Slightly larger font for comfort */
+  color: #555;  /* Soft grey for paragraph text */
+  margin-bottom: 20px;
+  text-align: justify; /* Justify text for balanced look */
+  line-height: 1.8;
+  padding-left: 20px; /* Left padding to create space from the edge */
+  padding-right: 20px; /* Right padding for consistency */
+}
+
+/* Optional: Style for links (if added in the future) */
+.static-page a {
+  color: #007bff;  /* Blue for clickable links */
+  text-decoration: none;
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.static-page a:hover {
+  color: #0056b3;  /* Darker blue on hover */
+  text-decoration: underline; /* Underline on hover for clarity */
+}
+
+/* Add some spacing for responsive adjustments */
+.static-page > * {
+  margin-bottom: 25px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .static-page {
+    padding: 30px;
+  }
+
+  .static-page h1 {
+    font-size: 2rem;
+  }
+
+  .static-page p {
+    font-size: 1.1rem;
+  }
+}
