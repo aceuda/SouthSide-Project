@@ -51,12 +51,15 @@ const CartPage = () => {
                         <span>₱{subtotal}</span>
                     </p>
 
-                    <Link to="/checkout">
-                        <Button disabled={items.length === 0}>Checkout</Button>
-                    </Link>
-                    <Button variant="outline" onClick={clearCart}>
-                        Clear Bag
-                    </Button>
+                    <div className="cart-summary-buttons">
+                        <Link to="/checkout">
+                            <Button disabled={items.length === 0}>Checkout</Button>
+                        </Link>
+                        <Button variant="outline" onClick={clearCart}>
+                            Clear Bag
+                        </Button>
+                    </div>
+
                 </aside>
             </div>
         </Section>
