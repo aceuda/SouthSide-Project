@@ -57,6 +57,16 @@
     margin-top: 0;
 }
 
+.cart-summary a,
+.cart-summary button {
+    margin-right: 8px;
+}
+
+.cart-summary a:last-child,
+.cart-summary button:last-child {
+    margin-right: 0;
+}
+
 .cart-line {
     display: flex;
     justify-content: space-between;
