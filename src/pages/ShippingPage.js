@@ -5,8 +5,8 @@ import "../css/Shipping.css";
 const ShippingPage = () => {
     return (
         <Section title="Shipping">
-            <div className="shipping-page">
-                <h2>Shipping Options</h2>
+            <div className="static-page">
+                <h1>Shipping Options</h1>
                 <p>
                     We offer several shipping options to meet your needs:
                 </p>
@@ -26,9 +26,9 @@ const ShippingPage = () => {
                     Shipping fees are calculated based on the weight of your order and the shipping method chosen:
                 </p>
                 <ul>
-                    <li>Standard Shipping: $5.99 (free for orders over $50)</li>
-                    <li>Expedited Shipping: $12.99</li>
-                    <li>Overnight Shipping: $24.99</li>
+                    <li><strong>Standard Shipping:</strong> Php350.00</li>
+                    <li><strong>Expedited Shipping:</strong> Php750.00</li>
+                    <li><strong>Overnight Shipping:</strong> Php1,500.00</li>
                 </ul>
 
                 <h2>International Shipping</h2>
