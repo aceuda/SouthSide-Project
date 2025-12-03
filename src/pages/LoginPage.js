@@ -15,7 +15,6 @@ const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Send login request to backend
         fetch("http://localhost:8080/api/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -25,20 +24,14 @@ const LoginPage = () => {
             .then((data) => {
                 console.log("LOGIN RESPONSE:", data);
 
-                // If backend returns "User not found", "Invalid password", etc.
                 if (typeof data === "string") {
                     setError(data);
                     return;
                 }
 
-                // If login success, backend returns the user object
                 if (data.id) {
-                    // Store user session
                     localStorage.setItem("user", JSON.stringify(data));
-
                     alert("Login successful!");
-
-                    // Redirect to home or shop
                     navigate("/");
                 }
             })
@@ -56,7 +49,6 @@ const LoginPage = () => {
                     Enter your credentials to access SouthSide Apparel.
                 </p>
 
-                {/* Error message */}
                 {error && <p className="auth-error">{error}</p>}
 
                 <form className="auth-form" onSubmit={handleSubmit}>
@@ -89,7 +81,8 @@ const LoginPage = () => {
                 </p>
             </div>
 
-            <div className="auth-side-image">Lifestyle Image</div>
+            {/* Side Image */}
+            <div className="auth-side-image"></div>
         </div>
     );
 };
