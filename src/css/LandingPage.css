@@ -8,9 +8,12 @@
 }
 
 /* Body and HTML styling to prevent horizontal scrolling */
-html, body {
-  height: 100%;  /* Ensure full viewport height */
-  overflow-x: hidden;  /* Prevent horizontal scrolling */
+html,
+body {
+  height: 100%;
+  /* Ensure full viewport height */
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
   margin: 0;
   padding: 0;
 }
@@ -18,7 +21,8 @@ html, body {
 /* Body styling */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #fafafa;  /* Subtle light grey background */
+  background-color: #fafafa;
+  /* Subtle light grey background */
   color: #333;
   line-height: 1.6;
 }
@@ -32,30 +36,41 @@ body {
   justify-content: center;
   text-align: center;
   background-image: url('../images/hero.jpg');
-  background-size: cover;  /* Ensures the image covers the entire screen */
-  background-position: center center;  /* Centers the image properly */
-  background-attachment: fixed; /* Parallax effect */
-  height: 100vh;  /* Full-screen height */
-  width: 100vw; /* Full width of the screen */
+  background-size: cover;
+  /* Ensures the image covers the entire screen */
+  background-position: center center;
+  /* Centers the image properly */
+  background-attachment: fixed;
+  /* Parallax effect */
+  height: 100vh;
+  /* Full-screen height */
+  width: 100vw;
+  /* Full width of the screen */
   color: #fff;
   padding: 0;
-  overflow: hidden;  /* Prevents horizontal scrolling */
+  overflow: hidden;
+  /* Prevents horizontal scrolling */
   margin-left: -250px;
 }
 
 .hero-content {
   z-index: 2;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 .hero h1 {
-  font-size: 4rem;
+  font-size: 5.5rem;
   font-weight: 900;
-  letter-spacing: -0.1em;
+  letter-spacing: -0.08em;
   margin-bottom: 18px;
   color: #fff;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+  font-family: 'Arial Black', 'Roboto', sans-serif;
+  text-transform: uppercase;
+  word-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .hero p {
@@ -86,11 +101,13 @@ body {
 .hero-actions button:hover {
   background-color: #fff;
   color: #111;
-  transform: scale(1.05); /* Subtle hover effect */
+  transform: scale(1.05);
+  /* Subtle hover effect */
 }
 
 .hero-image {
-  display: none;  /* Hidden since the image is a background */
+  display: none;
+  /* Hidden since the image is a background */
 }
 
 /* Featured Section */
@@ -101,7 +118,8 @@ body {
   text-align: center;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 40px;  /* Space between hero and featured section */
+  margin-top: 40px;
+  /* Space between hero and featured section */
 }
 
 .section-header h2 {
@@ -121,7 +139,8 @@ body {
   gap: 30px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   margin-top: 30px;
-  padding: 0 20px;  /* Adding padding to align the grid */
+  padding: 0 20px;
+  /* Adding padding to align the grid */
 }
 
 .product-card {
@@ -183,7 +202,8 @@ body {
 
 .product-info button:hover {
   background-color: #007bff;
-  transform: scale(1.05); /* Subtle hover effect */
+  transform: scale(1.05);
+  /* Subtle hover effect */
 }
 
 /* Smooth Scrolling */
