@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
@@ -22,10 +23,19 @@ const productImages = [
 
 const LandingPage = () => {
     const { addItem } = useCart();
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "SouthSide Apparel | Home";
     }, []);
+
+    const handleShopNow = () => {
+        navigate("/shop");
+    };
+
+    const handleViewCollection = () => {
+        navigate("/shop");
+    };
 
     return (
         <div className="landing">
@@ -35,8 +45,8 @@ const LandingPage = () => {
                     <h1>SouthSide Apparel</h1>
                     <p>Urban fits for your everyday hustle.</p>
                     <div className="hero-actions">
-                        <Button>Shop Now</Button>
-                        <Button variant="outline">View Collection</Button>
+                        <Button onClick={handleShopNow}>Shop Now</Button>
+                        <Button variant="outline" onClick={handleViewCollection}>View Collection</Button>
                     </div>
                 </div>
                 <img src={heroImage} alt="Hero" className="hero-image" />
