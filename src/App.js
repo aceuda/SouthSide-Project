@@ -17,6 +17,10 @@ import MenuPage from "./pages/MenuPage";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AdminProducts from "./pages/AdminProducts";
+import ProfilePage from "./pages/ProfilePage";
+import OrdersPage from "./pages/OrdersPage";
+import FavouritesPage from "./pages/FavouritesPage";
+import SettingsPage from "./pages/SettingsPage";
 
 const App = () => {
   return (
@@ -33,6 +37,11 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/cart" element={<CartPage />} />
+
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/favorites" element={<FavouritesPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/payment" element={<PaymentPage />} />
