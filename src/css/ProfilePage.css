@@ -1,0 +1,186 @@
+/* Profile Page Styling */
+.profile-page {
+    margin: 0 auto;
+    padding: 20px 80px;
+    width: 100%;
+    max-width: 1200px;
+    /* Fixed max-width for profile page */
+    /* Make the page width more solid and consistent */
+}
+
+.profile-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+    /* Ensure the card occupies the full width inside the profile page */
+}
+
+/* Profile Header */
+.profile-header {
+    display: block;
+    /* Use block-level layout instead of flex */
+    padding: 32px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+    /* Center the content */
+}
+
+.profile-avatar {
+    width: 100px;
+    /* Slightly larger avatar */
+    height: 100px;
+    border-radius: 50%;
+    background: #111;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 16px;
+    /* Space between avatar and text */
+}
+
+.profile-header-info h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    /* Larger font size for name */
+    font-weight: 700;
+    color: #111;
+}
+
+.profile-header-info p {
+    margin: 0;
+    font-size: 1rem;
+    /* Larger font size for the description */
+    color: #666;
+}
+
+/* Profile Content */
+.profile-content {
+    padding: 32px;
+    display: block;
+    /* Block-level for better layout control */
+}
+
+/* Profile Sections */
+.profile-section {
+    margin-bottom: 32px;
+}
+
+.profile-section h3 {
+    margin: 0 0 24px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 2px solid #000;
+    padding-bottom: 12px;
+}
+
+/* Profile Form Styling */
+.profile-form {
+    display: block;
+    /* Block-level for easier layout control */
+    margin-top: 20px;
+}
+
+.form-group {
+    display: block;
+    /* Block-level for each input field */
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    /* Ensure input fields take full width */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+/* Profile Actions (buttons) */
+.profile-actions {
+    padding-top: 24px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    /* Center the buttons */
+}
+
+.profile-actions button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+    /* Space between buttons */
+}
+
+.profile-actions button:hover {
+    background-color: #333;
+}
+
+/* Responsive adjustments for medium screens */
+@media (max-width: 1024px) {
+    .profile-page {
+        padding: 20px;
+        /* Adjust padding on smaller screens */
+    }
+
+    .profile-content {
+        padding: 24px;
+    }
+
+    .profile-header {
+        padding: 24px;
+    }
+
+    .profile-actions {
+        padding-top: 16px;
+    }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 600px) {
+    .profile-page {
+        padding: 15px;
+        /* Adjust padding on small screens */
+    }
+
+    .profile-header {
+        padding: 16px;
+    }
+
+    .profile-content {
+        padding: 20px 10px;
+    }
+
+    .profile-actions button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Ensure the page and body take full width */
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
