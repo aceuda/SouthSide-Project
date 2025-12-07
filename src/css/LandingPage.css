@@ -206,6 +206,63 @@ body {
   /* Subtle hover effect */
 }
 
+.product-info button:disabled {
+  background-color: #28a745;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+.product-info button.button-added {
+  background-color: #28a745;
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Cart Notification */
+.cart-notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-weight: 600;
+  animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
