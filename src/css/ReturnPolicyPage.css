@@ -1,4 +1,4 @@
-/* ReturnPolicyPage.css */
+/* ReturnPolicyPage.css - Minimalist Black & White Theme */
 
 /* Universal Reset */
 *,
@@ -11,80 +11,284 @@
 
 /* Body styling */
 body {
-  font-family: 'Roboto', sans-serif;  /* Clean, modern font */
-  background-color: #f7f7f7;  /* Soft grey background for contrast */
-  color: #333;  /* Standard text color */
-  line-height: 1.7;  /* Improved line height for better readability */
+  font-family: 'Roboto', sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  line-height: 1.7;
+}
+
+/* Return Policy Container */
+.return-policy-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #fafafa;
 }
 
 /* Main container for static page content */
 .static-page {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 40px;
-  background-color: #ffffff; /* White background */
-  border-radius: 12px; /* Rounded corners for a soft edge */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Deeper shadow for more elevation */
-  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px;
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* Hover effect to elevate the box */
 .static-page:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15); /* Deeper shadow when hovered */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Title styling */
-.static-page h1 {
-  font-size: 2.5rem;  /* Larger font for a more commanding presence */
-  color: #222;  /* Darker text for strong contrast */
+/* Policy Introduction Section */
+.policy-intro {
+  background: transparent;
+  color: #111;
+  padding: 40px 0;
+  margin: 0 0 40px 0;
+  border-bottom: 3px solid #111;
+}
+
+.intro-text {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-align: left;
+  padding: 0;
+  color: #111;
+  font-weight: 600;
+}
+
+.last-updated {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+  margin-top: 20px;
+  text-align: left;
+  color: #111;
+  font-weight: 500;
+}
+
+/* Policy Section */
+.policy-section {
+  background: white;
+  padding: 35px 0;
   margin-bottom: 30px;
-  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.policy-section:last-of-type {
+  border-bottom: none;
+}
+
+.policy-section:hover {
+  background: #fafafa;
+}
+
+/* Section Headings */
+.policy-section h2 {
+  font-size: 1.8rem;
+  color: #111;
+  margin-bottom: 20px;
   font-weight: 700;
-  letter-spacing: 1px;  /* Slight letter-spacing for clean spacing */
-  text-transform: uppercase;  /* Capitalized for professional look */
-  border-bottom: 2px solid #eee;  /* Soft line below the title for separation */
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
   padding-bottom: 10px;
+  border-bottom: 2px solid #111;
+  display: inline-block;
 }
 
 /* Paragraph text styling */
-.static-page p {
-  font-size: 1.15rem; /* Slightly larger font for comfort */
-  color: #555;  /* Soft grey for paragraph text */
-  margin-bottom: 20px;
-  text-align: justify; /* Justify text for balanced look */
+.policy-section p {
+  font-size: 1.05rem;
+  color: #444;
+  margin-bottom: 15px;
   line-height: 1.8;
-  padding-left: 20px; /* Left padding to create space from the edge */
-  padding-right: 20px; /* Right padding for consistency */
+  text-align: left;
+  padding: 0;
 }
 
-/* Optional: Style for links (if added in the future) */
-.static-page a {
-  color: #007bff;  /* Blue for clickable links */
+/* List styling */
+.policy-section ul {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+}
+
+.policy-section ul li {
+  font-size: 1.05rem;
+  color: #444;
+  margin-bottom: 12px;
+  padding-left: 25px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.policy-section ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #111;
+  font-weight: bold;
+  font-size: 1.2rem;
+  top: 0;
+}
+
+.policy-section ul li strong {
+  color: #111;
+  font-weight: 600;
+}
+
+/* Links styling */
+.policy-section a {
+  color: #111;
   text-decoration: none;
-  transition: color 0.3s ease; /* Smooth transition for hover effect */
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid #111;
 }
 
-.static-page a:hover {
-  color: #0056b3;  /* Darker blue on hover */
-  text-decoration: underline; /* Underline on hover for clarity */
+.policy-section a:hover {
+  opacity: 0.6;
+  border-bottom-color: transparent;
 }
 
-/* Add some spacing for responsive adjustments */
-.static-page > * {
-  margin-bottom: 25px;
+/* Contact Section Specific */
+.contact-section {
+  background: #f5f5f5;
+  padding: 35px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 30px;
+}
+
+.contact-info {
+  background: white;
+  padding: 25px;
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.contact-info p {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+.contact-info strong {
+  color: #111;
+  display: inline-block;
+  min-width: 80px;
+}
+
+/* Policy Footer */
+.policy-footer {
+  background: transparent;
+  color: #111;
+  padding: 30px;
+  text-align: center;
+  margin: 40px 0 0 0;
+  border-top: 2px solid #111;
+}
+
+.policy-footer p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0;
+  color: #111;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Responsive adjustments for tablets */
+@media (max-width: 768px) {
+  .static-page {
+    padding: 35px 25px;
+  }
+
+  .policy-intro {
+    padding: 30px 25px;
+    margin: 0 0 30px 0;
+  }
+
+  .intro-text {
+    font-size: 1.1rem;
+  }
+
+  .policy-section {
+    padding: 25px 0;
+  }
+
+  .policy-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .policy-section p,
+  .policy-section ul li {
+    font-size: 1rem;
+  }
+
+  .contact-section {
+    padding: 25px 20px;
+  }
+
+  .policy-footer {
+    margin: 30px 0 0 0;
+  }
 }
 
 /* Responsive adjustments for mobile */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+  .return-policy-container {
+    padding: 20px 10px;
+  }
+
   .static-page {
-    padding: 30px;
+    padding: 25px 15px;
   }
 
-  .static-page h1 {
-    font-size: 2rem;
+  .policy-intro {
+    padding: 25px 20px;
+    margin: 0 0 25px 0;
   }
 
-  .static-page p {
-    font-size: 1.1rem;
+  .intro-text {
+    font-size: 1rem;
+  }
+
+  .last-updated {
+    font-size: 0.9rem;
+  }
+
+  .policy-section {
+    padding: 20px 0;
+    margin-bottom: 20px;
+  }
+
+  .policy-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .policy-section ul li {
+    padding-left: 20px;
+    font-size: 0.95rem;
+  }
+
+  .contact-section {
+    padding: 20px 15px;
+  }
+
+  .contact-info {
+    padding: 20px;
+  }
+
+  .policy-footer {
+    padding: 25px 20px;
+    margin: 25px 0 0 0;
+  }
+
+  .policy-footer p {
+    font-size: 0.95rem;
   }
 }
