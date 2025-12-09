@@ -1,0 +1,15 @@
+.admin-navbar {
+    /* Reuse base navbar styling (light theme) */
+    background: #ffffff;
+    color: #111;
+}
+
+/* Optional subtle accent for admin logo text */
+.admin-navbar .navbar-logo span {
+    color: #000;
+}
+
+/* Keep underline color consistent with user navbar */
+.admin-navbar .navbar-links a::after {
+    background: #000;
+}

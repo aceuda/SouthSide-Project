@@ -9,6 +9,14 @@ const LoginPage = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    const handleForgotPassword = () => {
+        window.location.href = "mailto:support@southside.com?subject=Password%20reset&body=Hi%20SouthSide%20team,%20please%20help%20me%20reset%20my%20password.";
+    };
+
+    const handleGoToSignup = () => {
+        navigate("/signup");
+    };
+
     const handleChange = (e) =>
         setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -68,7 +76,7 @@ const LoginPage = () => {
                     />
 
                     <div className="auth-links-row">
-                        <button type="button" className="auth-text-link">
+                        <button type="button" className="auth-text-link" onClick={handleForgotPassword}>
                             Forgotten your password?
                         </button>
                     </div>
@@ -77,7 +85,7 @@ const LoginPage = () => {
                 </form>
 
                 <p className="auth-footnote">
-                    Not a member? <span>Create an account</span>
+                    Not a member? <span onClick={handleGoToSignup} style={{ cursor: "pointer" }}>Create an account</span>
                 </p>
             </div>
 

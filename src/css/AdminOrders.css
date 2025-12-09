@@ -1,0 +1,86 @@
+.admin-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.orders-error {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff5f5;
+    color: #b42318;
+    border: 1px solid #f2b8b5;
+}
+
+.orders-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.metric-card {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.metric-label {
+    margin: 0;
+    color: #666;
+    font-weight: 600;
+}
+
+.metric-value {
+    margin: 4px 0 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.orders-panel {
+    padding: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-meta {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.orders-loading,
+.orders-empty {
+    padding: 16px;
+    color: #666;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-top: 1px solid var(--border);
+}
+
+.orders-table th {
+    background: #fafafa;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+
+    .orders-table th,
+    .orders-table td {
+        padding: 10px 12px;
+    }
+}

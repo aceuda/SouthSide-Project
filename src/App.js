@@ -1,7 +1,8 @@
 // src/App.js
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
+import AdminNavbar from "./components/layout/AdminNavbar";
 import Footer from "./components/layout/Footer";
 import { CartProvider } from "./context/CartContext";
 
@@ -17,16 +18,21 @@ import MenuPage from "./pages/MenuPage";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AdminProducts from "./pages/AdminProducts";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminOrders from "./pages/AdminOrders";
 import ProfilePage from "./pages/ProfilePage";
 import OrdersPage from "./pages/OrdersPage";
 import FavouritesPage from "./pages/FavouritesPage";
 import SettingsPage from "./pages/SettingsPage";
 
 const App = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <CartProvider>
       <div className="app">
-        <Navbar />
+        {isAdminRoute ? <AdminNavbar /> : <Navbar />}
         <main className="app-main">
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -47,6 +53,8 @@ const App = () => {
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/shipping" element={<ShippingPage />} />
             <Route path="/returns" element={<ReturnPolicyPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/products" element={<AdminProducts />} />
           </Routes>
         </main>

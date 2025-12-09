@@ -4,6 +4,16 @@ import "../css/AdminProducts.css";
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null);
+    const [sortCategory, setSortCategory] = useState("all");
+    const [imagePreview, setImagePreview] = useState("");
+
+    const categoryOptions = [
+        "New Arrivals",
+        "Men",
+        "Women",
+        "Kids",
+        "Accessories",
+    ];
 
     const emptyForm = {
         name: "",
@@ -22,7 +32,13 @@ const AdminProducts = () => {
     const loadProducts = () => {
         fetch("http://localhost:8080/api/products")
             .then((res) => res.json())
-            .then((data) => setProducts(data));
+            .then((data) => {
+                console.log("Loaded products:", data);
+                setProducts(data);
+            })
+            .catch((err) => {
+                console.error("Error loading products:", err);
+            });
     };
 
     useEffect(() => {
@@ -34,16 +50,42 @@ const AdminProducts = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    // Handle file upload
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result;
+                setForm({ ...form, image: base64String });
+                setImagePreview(base64String);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     // CREATE product
     const createProduct = () => {
+        console.log("Creating product:", form);
         fetch("http://localhost:8080/api/products", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form),
-        }).then(() => {
-            loadProducts();
-            setForm(emptyForm);
-        });
+        })
+            .then((res) => {
+                console.log("Create response status:", res.status);
+                return res.json();
+            })
+            .then((data) => {
+                console.log("Created product:", data);
+                loadProducts();
+                setForm(emptyForm);
+                setImagePreview("");
+            })
+            .catch((err) => {
+                console.error("Error creating product:", err);
+                alert("Failed to create product: " + err.message);
+            });
     };
 
     // UPDATE product
@@ -56,6 +98,7 @@ const AdminProducts = () => {
             loadProducts();
             setForm(emptyForm);
             setEditingProduct(null);
+            setImagePreview("");
         });
     };
 
@@ -68,19 +111,36 @@ const AdminProducts = () => {
 
     return (
         <div className="admin-container">
-            <h1>Admin Product Manager</h1>
-
             {/* FORM */}
             <div className="admin-form-card">
+                <h1>Admin Product Manager</h1>
                 <h2>{editingProduct ? "Edit Product" : "Add Product"}</h2>
 
                 <input name="name" placeholder="Product Name" value={form.name} onChange={handleChange} />
-                <input name="category" placeholder="Category" value={form.category} onChange={handleChange} />
+                <label className="admin-input-label">
+                    Category
+                    <select name="category" value={form.category} onChange={handleChange}>
+                        <option value="">Select a category</option>
+                        {categoryOptions.map((cat) => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                </label>
                 <input name="subtitle" placeholder="Subtitle" value={form.subtitle} onChange={handleChange} />
                 <input name="price" placeholder="Price" value={form.price} onChange={handleChange} />
                 <input name="quantity" placeholder="quantity" value={form.quantity} onChange={handleChange} />
                 <input name="badge" placeholder="Badge" value={form.badge} onChange={handleChange} />
-                <input name="image" placeholder="Image URL" value={form.image} onChange={handleChange} />
+
+                <label className="admin-input-label">
+                    Product Image
+                    <input type="file" accept="image/*" onChange={handleFileChange} />
+                </label>
+                {(imagePreview || form.image) && (
+                    <div className="admin-image-preview">
+                        <img src={imagePreview || form.image} alt="Product preview" />
+                    </div>
+                )}
+
                 <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} />
 
                 {editingProduct ? (
@@ -92,7 +152,20 @@ const AdminProducts = () => {
 
             {/* PRODUCT LIST */}
             <div className="admin-product-list">
-                <h2>Products</h2>
+                <div className="admin-product-list-header">
+                    <h2>Products</h2>
+                    <div className="admin-sort-row">
+                        <label>
+                            Sort by category
+                            <select value={sortCategory} onChange={(e) => setSortCategory(e.target.value)}>
+                                <option value="all">All</option>
+                                {categoryOptions.map((cat) => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+                        </label>
+                    </div>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -106,7 +179,7 @@ const AdminProducts = () => {
                     </thead>
 
                     <tbody>
-                        {products.map((p) => (
+                        {(sortCategory === "all" ? products : products.filter((p) => p.category === sortCategory)).map((p) => (
                             <tr key={p.id}>
                                 <td>{p.name}</td>
                                 <td>{p.category}</td>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/ui/Button";
 import "../css/ProductPage.css";
 
 const ProductPage = () => {
     const { id } = useParams();
-    const { addItem } = useCart();
+    const { addToCart, isAuthenticated } = useCart();
+    const navigate = useNavigate();
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -86,9 +88,49 @@ const ProductPage = () => {
 
                 {/* Add to Bag + Favorite */}
                 <div className="product-actions">
-                    <Button onClick={() => addItem(product)}>Add to Bag</Button>
-                    <Button variant="outline">Favorite</Button>
+                    <Button
+                        onClick={async () => {
+                            if (!isAuthenticated) {
+                                setShowLoginPrompt(true);
+                                return;
+                            }
+                            await addToCart(product.id, 1);
+                        }}
+                    >
+                        Add to Bag
+                    </Button>
+                    <Button
+                        variant="outline"
+                        onClick={async () => {
+                            if (!isAuthenticated) {
+                                setShowLoginPrompt(true);
+                                return;
+                            }
+                            try {
+                                await addToCart(product.id, 1);
+                                navigate("/checkout");
+                            } catch (err) {
+                                alert("Could not proceed to checkout. Please try again.");
+                            }
+                        }}
+                    >
+                        Buy Now
+                    </Button>
                 </div>
+
+                {showLoginPrompt && (
+                    <div className="login-modal-backdrop" onClick={() => setShowLoginPrompt(false)}>
+                        <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+                            <h3>Please log in</h3>
+                            <p>You need an account to add items to your bag.</p>
+                            <div className="login-modal-actions">
+                                <Link to="/login" className="btn btn-primary">Login</Link>
+                                <Link to="/signup" className="btn btn-outline">Sign Up</Link>
+                                <button className="btn btn-outline" onClick={() => setShowLoginPrompt(false)}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Description */}
                 <div className="product-desc">

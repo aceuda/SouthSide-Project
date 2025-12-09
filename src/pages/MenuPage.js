@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
@@ -16,11 +16,44 @@ const categories = [
 ];
 
 const MenuPage = () => {
-    const { addItem } = useCart();
+    const { addToCart, isAuthenticated } = useCart();
+    const navigate = useNavigate();
+    const [favourites, setFavourites] = useState([]);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
+    const [addingToCart, setAddingToCart] = useState(null);
 
     // React state to hold products from Spring Boot
     const [products, setProducts] = useState([]);
+
+    // Get current user ID
+    const getUserId = () => {
+        const user = localStorage.getItem("user");
+        if (user) {
+            try {
+                const parsed = JSON.parse(user);
+                return parsed.id;
+            } catch (e) {
+                return null;
+            }
+        }
+        return null;
+    };
+
+    const userId = getUserId();
+    const favKey = userId ? `favourites_user_${userId}` : "favourites_guest";
+
+    // Load favourites from localStorage (per user)
+    useEffect(() => {
+        const stored = localStorage.getItem(favKey);
+        if (stored) {
+            try {
+                setFavourites(JSON.parse(stored));
+            } catch (e) {
+                setFavourites([]);
+            }
+        }
+    }, [favKey]);
 
     // Fetch products from Spring Boot API
     useEffect(() => {
@@ -40,8 +73,79 @@ const MenuPage = () => {
                     : p.category === activeCategory
             );
 
+    // Handle add to cart with backend API
+    const handleAddToCart = async (productId) => {
+        if (!isAuthenticated) {
+            setShowLoginPrompt(true);
+            return;
+        }
+        setAddingToCart(productId);
+        try {
+            await addToCart(productId, 1);
+            alert("Added to cart!");
+        } catch (error) {
+            alert("Failed to add to cart. Please try again.");
+        } finally {
+            setAddingToCart(null);
+        }
+    };
+
+    const handleBuyNow = async (productId) => {
+        if (!isAuthenticated) {
+            setShowLoginPrompt(true);
+            return;
+        }
+        setAddingToCart(productId);
+        try {
+            await addToCart(productId, 1);
+            navigate("/checkout");
+        } catch (error) {
+            alert("Failed to proceed. Please try again.");
+        } finally {
+            setAddingToCart(null);
+        }
+    };
+
+    const toggleFavourite = (product) => {
+        const exists = favourites.find((f) => f.id === product.id);
+        let updated;
+        if (exists) {
+            updated = favourites.filter((f) => f.id !== product.id);
+        } else {
+            updated = [
+                ...favourites,
+                {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    category: product.category,
+                    badge: product.badge,
+                    subtitle: product.subtitle,
+                    image: product.image || "",
+                },
+            ];
+        }
+        setFavourites(updated);
+        localStorage.setItem(favKey, JSON.stringify(updated));
+    };
+
+    const isFavourite = (productId) => favourites.some((f) => f.id === productId);
+
     return (
         <Section title="Shop">
+            {showLoginPrompt && (
+                <div className="login-modal-backdrop" onClick={() => setShowLoginPrompt(false)}>
+                    <div className="login-modal" onClick={(e) => e.stopPropagation()}>
+                        <h3>Please log in</h3>
+                        <p>You need an account to add items to your bag.</p>
+                        <div className="login-modal-actions">
+                            <Link to="/login" className="btn btn-primary">Login</Link>
+                            <Link to="/signup" className="btn btn-outline">Sign Up</Link>
+                            <button className="btn btn-outline" onClick={() => setShowLoginPrompt(false)}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* Category Tabs */}
             <div className="menu-tabs">
                 {categories.map((cat) => (
@@ -61,7 +165,11 @@ const MenuPage = () => {
                     <Card key={p.id} className="menu-product-card">
                         <Link to={`/product/${p.id}`}>
                             <div className="menu-product-image">
-                                <span>Image</span>
+                                {p.image ? (
+                                    <img src={p.image} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                ) : (
+                                    <span>No Image</span>
+                                )}
                             </div>
                         </Link>
 
@@ -72,7 +180,26 @@ const MenuPage = () => {
                             <p className="menu-category">{p.category}</p>
                             <p className="menu-price">₱{p.price}</p>
                             <div className="menu-actions">
-                                <Button onClick={() => addItem(p)}>Add to Cart</Button>
+                                <button
+                                    className={`fav-star ${isFavourite(p.id) ? "active" : ""}`}
+                                    onClick={() => toggleFavourite(p)}
+                                    aria-label="Toggle favourite"
+                                >
+                                    ★
+                                </button>
+                                <Button
+                                    onClick={() => handleAddToCart(p.id)}
+                                    disabled={addingToCart === p.id}
+                                >
+                                    {addingToCart === p.id ? "Adding..." : "Add to Cart"}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => handleBuyNow(p.id)}
+                                    disabled={addingToCart === p.id}
+                                >
+                                    {addingToCart === p.id ? "Adding..." : "Buy Now"}
+                                </Button>
                                 <Link to={`/product/${p.id}`} className="menu-link">
                                     View
                                 </Link>
