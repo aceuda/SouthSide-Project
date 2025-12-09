@@ -10,7 +10,23 @@ const OrdersPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = 1; // Replace with actual user ID from your authentication context
+        // Get actual user ID from localStorage
+        const user = localStorage.getItem("user");
+        let userId = null;
+        if (user) {
+            try {
+                const parsed = JSON.parse(user);
+                userId = parsed.id;
+            } catch (e) {
+                console.error("Failed to parse user:", e);
+            }
+        }
+
+        if (!userId) {
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
 
         fetch(`http://localhost:8080/api/orders/user/${userId}`)
@@ -41,7 +57,8 @@ const OrdersPage = () => {
     };
 
     const formatOrderId = (id) => {
-        return id.startsWith("ORD-") ? id : `ORD-${id}`;
+        const idString = String(id);
+        return idString.startsWith("ORD-") ? idString : `ORD-${idString}`;
     };
 
     const handleOrderReceived = (orderId) => {
@@ -122,70 +139,127 @@ const OrdersPage = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className="orders-list">
-                        {orders.map((order) => (
-                            <Card key={order.id} className="order-card">
-                                <div className="order-header">
-                                    <div className="order-info">
-                                        <h3>{formatOrderId(order.id)}</h3>
-                                        <p className="order-date">
-                                            {new Date(order.createdAt).toLocaleDateString("en-US", {
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric",
-                                            })}
-                                        </p>
-                                    </div>
-                                    <span className={`order-status ${getStatusClass(order.status)}`}>
-                                        {order.status}
-                                    </span>
-                                </div>
+                    <>
+                        {/* Active Orders Section */}
+                        <div className="orders-section">
+                            <h2 className="section-title">Active Orders</h2>
+                            <div className="orders-list">
+                                {orders.filter(order => order.status !== "Delivered").length === 0 ? (
+                                    <p className="no-orders-message">No active orders</p>
+                                ) : (
+                                    orders.filter(order => order.status !== "Delivered").map((order) => (
+                                        <Card key={order.id} className="order-card">
+                                            <div className="order-header">
+                                                <div className="order-info">
+                                                    <h3>{formatOrderId(order.id)}</h3>
+                                                    <p className="order-date">
+                                                        {new Date(order.createdAt).toLocaleDateString("en-US", {
+                                                            year: "numeric",
+                                                            month: "long",
+                                                            day: "numeric",
+                                                        })}
+                                                    </p>
+                                                </div>
+                                                <span className={`order-status ${getStatusClass(order.status)}`}>
+                                                    {order.status}
+                                                </span>
+                                            </div>
 
-                                <div className="order-items">
-                                    {order.items && order.items.map((item, index) => (
-                                        <div key={index} className="order-item">
-                                            <span className="item-name">{item.product.name}</span>
-                                            <span className="item-qty">Qty: {item.quantity}</span>
-                                            <span className="item-price">₱{item.price}</span>
-                                        </div>
+                                            <div className="order-items">
+                                                {order.items && order.items.map((item, index) => (
+                                                    <div key={index} className="order-item">
+                                                        <span className="item-name">{item.product.name}</span>
+                                                        <span className="item-qty">Qty: {item.quantity}</span>
+                                                        <span className="item-price">₱{item.price}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="order-footer">
+                                                <div className="order-total">
+                                                    <span>Total:</span>
+                                                    <span className="total-amount">₱{order.total}</span>
+                                                </div>
+                                                <div className="order-actions">
+                                                    {order.status !== "Delivered" && order.status !== "Not Received" && (
+                                                        <>
+                                                            <Button onClick={() => handleOrderReceived(order.id)}>
+                                                                ✓ Order Received
+                                                            </Button>
+                                                            <Button variant="outline" onClick={() => handleOrderNotReceived(order.id)}>
+                                                                ✗ Not Received
+                                                            </Button>
+                                                        </>
+                                                    )}
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => handleDeleteOrder(order.id)}
+                                                        className="delete-btn"
+                                                    >
+                                                        🗑️ Delete
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Completed Orders Section */}
+                        {orders.filter(order => order.status === "Delivered").length > 0 && (
+                            <div className="orders-section completed-section">
+                                <h2 className="section-title">Completed Orders</h2>
+                                <div className="orders-list">
+                                    {orders.filter(order => order.status === "Delivered").map((order) => (
+                                        <Card key={order.id} className="order-card">
+                                            <div className="order-header">
+                                                <div className="order-info">
+                                                    <h3>{formatOrderId(order.id)}</h3>
+                                                    <p className="order-date">
+                                                        {new Date(order.createdAt).toLocaleDateString("en-US", {
+                                                            year: "numeric",
+                                                            month: "long",
+                                                            day: "numeric",
+                                                        })}
+                                                    </p>
+                                                </div>
+                                                <span className={`order-status ${getStatusClass(order.status)}`}>
+                                                    {order.status}
+                                                </span>
+                                            </div>
+
+                                            <div className="order-items">
+                                                {order.items && order.items.map((item, index) => (
+                                                    <div key={index} className="order-item">
+                                                        <span className="item-name">{item.product.name}</span>
+                                                        <span className="item-qty">Qty: {item.quantity}</span>
+                                                        <span className="item-price">₱{item.price}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="order-footer">
+                                                <div className="order-total">
+                                                    <span>Total:</span>
+                                                    <span className="total-amount">₱{order.total}</span>
+                                                </div>
+                                                <div className="order-actions">
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => handleDeleteOrder(order.id)}
+                                                        className="delete-btn"
+                                                    >
+                                                        🗑️ Delete
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </Card>
                                     ))}
                                 </div>
-
-                                <div className="order-footer">
-                                    <div className="order-total">
-                                        <span>Total:</span>
-                                        <span className="total-amount">₱{order.total}</span>
-                                    </div>
-                                    <div className="order-actions">
-                                        {order.status === "Shipping" ? (
-                                            <>
-                                                <Button onClick={() => handleOrderReceived(order.id)}>
-                                                    ✓ Received
-                                                </Button>
-                                                <Button variant="outline" onClick={() => handleOrderNotReceived(order.id)}>
-                                                    ✗ Not Received
-                                                </Button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Button variant="outline">View Details</Button>
-                                                {order.status === "Delivered" && (
-                                                    <Button>Buy Again</Button>
-                                                )}
-                                            </>
-                                        )}
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => handleDeleteOrder(order.id)}
-                                            className="delete-btn"
-                                        >
-                                            🗑️ Delete
-                                        </Button>
-                                    </div>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </Section>

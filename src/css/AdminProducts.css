@@ -1,7 +1,11 @@
 .admin-container {
-    max-width: 1100px;
+    max-width: 1500px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 16px 20px 20px 12px;
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    gap: 30px;
+    align-items: start;
 }
 
 .admin-form-card {
@@ -9,10 +13,40 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     background: #fff;
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: sticky;
+    top: 16px;
+}
+
+.admin-input-label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.admin-form-card select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.admin-image-preview {
+    width: 100%;
+    max-height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.admin-image-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .admin-form-card input,
@@ -36,6 +70,21 @@
     border-collapse: collapse;
 }
 
+.admin-product-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.admin-sort-row select {
+    margin-left: 8px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+}
+
 .admin-product-list th,
 .admin-product-list td {
     padding: 12px;
@@ -51,4 +100,14 @@
     border-radius: 6px;
     border: none;
     cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-form-card {
+        position: static;
+    }
 }

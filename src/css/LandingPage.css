@@ -7,6 +7,12 @@
   box-sizing: border-box;
 }
 
+#root {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 /* Body and HTML styling to prevent horizontal scrolling */
 html,
 body {
@@ -27,6 +33,13 @@ body {
   line-height: 1.6;
 }
 
+.landing {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Hero Section */
 .hero {
   position: relative;
@@ -44,13 +57,13 @@ body {
   /* Parallax effect */
   height: 100vh;
   /* Full-screen height */
-  width: 100vw;
-  /* Full width of the screen */
+  width: 100%;
+  /* Full width */
   color: #fff;
   padding: 0;
+  margin: 0;
   overflow: hidden;
   /* Prevents horizontal scrolling */
-  margin-left: -250px;
 }
 
 .hero-content {
@@ -218,9 +231,12 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -246,6 +262,7 @@ body {
     transform: translateX(400px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -257,6 +274,7 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
+
   to {
     transform: translateX(400px);
     opacity: 0;

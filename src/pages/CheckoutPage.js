@@ -7,13 +7,10 @@ import { useCart } from "../context/CartContext";
 import "../css/CheckoutPage.css";
 
 const CheckoutPage = () => {
-    const { items, clearCart } = useCart();
+    const { items, checkout, cartTotal, fetchCart } = useCart();
     const navigate = useNavigate();
-    const subtotal = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-    );
     const [paymentMethod, setPaymentMethod] = useState("card");
+    const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
         fullName: "",
         address: "",
@@ -27,7 +24,7 @@ const CheckoutPage = () => {
         setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate shipping fields
@@ -42,47 +39,37 @@ const CheckoutPage = () => {
             return;
         }
 
-        // Prepare order data
-        const orderData = {
-            shippingAddress: form.address,
-            shippingCity: form.city,
-            shippingState: form.city, // Assuming state is the same as city for simplicity
-            shippingZip: form.postal,
-            phoneNumber: form.card || "N/A",  // Using the card number for phone number if needed
-            items: items.map((item) => ({
-                productId: item.id,
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price,
-                category: item.category
-            })),
-        };
+        setSubmitting(true);
 
-        const userId = 1; // Replace with actual user ID, e.g., from session or auth context
+        try {
+            // Prepare checkout data for backend
+            const checkoutData = {
+                fullName: form.fullName,
+                address: form.address,
+                city: form.city,
+                postal: form.postal,
+                paymentMethod: paymentMethod,
+                card: paymentMethod === "card" ? form.card : null,
+            };
 
-        // Send order data to the backend to create an order
-        fetch(`http://localhost:8080/api/orders/checkout/${userId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(orderData),
-        })
-            .then((response) => response.json())
-            .then((order) => {
-                console.log("Order created:", order);
-                alert("Order placed successfully!");
+            // Call checkout from CartContext (which calls the backend API)
+            const order = await checkout(checkoutData);
 
-                // Clear cart after order creation
-                clearCart();
+            console.log("Order created:", order);
 
-                // Redirect to orders page
-                navigate("/orders");
-            })
-            .catch((error) => {
-                console.error("Error creating order:", error);
-                alert("There was an error placing the order. Please try again.");
-            });
+            // Force refresh cart to ensure it's cleared
+            await fetchCart();
+
+            alert(`Order #${order.id} placed successfully!`);
+
+            // Redirect to orders page
+            navigate("/orders");
+        } catch (error) {
+            console.error("Error creating order:", error);
+            alert("There was an error placing the order. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -168,7 +155,9 @@ const CheckoutPage = () => {
                         </div>
                     )}
 
-                    <Button type="submit">Place Order</Button>
+                    <Button type="submit" disabled={submitting || items.length === 0}>
+                        {submitting ? "Processing..." : "Place Order"}
+                    </Button>
                 </form>
 
                 <aside className="checkout-summary">
@@ -176,7 +165,7 @@ const CheckoutPage = () => {
                     <div className="checkout-items">
                         {items.map((item) => (
                             <div key={item.id} className="checkout-item">
-                                <span>{item.name}</span>
+                                <span>{item.product?.name}</span>
                                 <span>
                                     x{item.quantity} · ₱{item.price}
                                 </span>
@@ -186,7 +175,7 @@ const CheckoutPage = () => {
 
                     <p className="checkout-line">
                         <span>Subtotal</span>
-                        <span>₱{subtotal}</span>
+                        <span>₱{cartTotal.toFixed(2)}</span>
                     </p>
                     <p className="checkout-line">
                         <span>Shipping</span>
@@ -194,7 +183,7 @@ const CheckoutPage = () => {
                     </p>
                     <p className="checkout-line checkout-total">
                         <span>Total</span>
-                        <span>₱{subtotal}</span>
+                        <span>₱{cartTotal.toFixed(2)}</span>
                     </p>
                     <div className="payment-method-display">
                         <p><strong>Payment:</strong> {paymentMethod === "card" ? "Credit/Debit Card" : "Cash on Delivery"}</p>

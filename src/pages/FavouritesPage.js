@@ -7,20 +7,17 @@ import { useCart } from "../context/CartContext";
 import "../css/FavouritesPage.css";
 
 const FavouritesPage = () => {
-    const { addItem } = useCart();
+    const { addToCart } = useCart();
     const [favourites, setFavourites] = useState([]);
 
     useEffect(() => {
         const storedFavourites = localStorage.getItem("favourites");
         if (storedFavourites) {
-            setFavourites(JSON.parse(storedFavourites));
-        } else {
-            // Sample favourites for demonstration
-            setFavourites([
-                { id: 1, name: "Street Hoodie", price: 1299, category: "Men", badge: "New" },
-                { id: 2, name: "Oversized Tee", price: 699, category: "Men", badge: "Bestseller" },
-                { id: 5, name: "Tech Fleece Hoodie", price: 1899, category: "New Arrivals", badge: "New" }
-            ]);
+            try {
+                setFavourites(JSON.parse(storedFavourites));
+            } catch (e) {
+                setFavourites([]);
+            }
         }
     }, []);
 
@@ -30,8 +27,13 @@ const FavouritesPage = () => {
         localStorage.setItem("favourites", JSON.stringify(updated));
     };
 
-    const handleAddToCart = (product) => {
-        addItem(product);
+    const handleAddToCart = async (product) => {
+        try {
+            await addToCart(product.id, 1);
+            alert("Added to cart!");
+        } catch (e) {
+            alert("Failed to add to cart.");
+        }
     };
 
     return (
