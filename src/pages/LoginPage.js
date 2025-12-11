@@ -40,7 +40,13 @@ const LoginPage = () => {
                 if (data.id) {
                     localStorage.setItem("user", JSON.stringify(data));
                     alert("Login successful!");
-                    navigate("/");
+
+                    // Redirect based on user role
+                    if (data.role === "admin") {
+                        navigate("/admin/dashboard");
+                    } else {
+                        navigate("/");
+                    }
                 }
             })
             .catch((err) => {

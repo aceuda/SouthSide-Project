@@ -21,10 +21,10 @@ const AdminNavbar = () => {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("admin");
+        localStorage.removeItem("user");
         resetCart();
-        navigate("/");
-        window.location.reload();
+        setAdmin({ name: "Admin" });
+        window.location.href = "/";
     };
 
     return (

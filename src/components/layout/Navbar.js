@@ -6,26 +6,13 @@ import "../../css/Navbar.css";
 
 const Navbar = () => {
     const [user, setUser] = useState(null);
-    const [admin, setAdmin] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
     const { resetCart } = useCart();
 
     const loadAuthFromStorage = useCallback(() => {
         const storedUser = localStorage.getItem("user");
-        const storedAdmin = localStorage.getItem("admin");
-
         setUser(storedUser ? JSON.parse(storedUser) : null);
-
-        if (storedAdmin) {
-            try {
-                setAdmin(JSON.parse(storedAdmin));
-            } catch (e) {
-                setAdmin({ name: "Admin" });
-            }
-        } else {
-            setAdmin(null);
-        }
     }, []);
 
     useEffect(() => {
@@ -48,13 +35,16 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("user");
-        localStorage.removeItem("admin");
-        setUser(null);
-        setAdmin(null);
         resetCart();
-        navigate("/");
-        window.location.reload();
+        setUser(null);
+        navigate("/login");
+        // Force reload to clear all state
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 100);
     };
+
+    const isAdmin = user?.role === "admin";
 
     return (
         <header className="navbar">
@@ -74,7 +64,7 @@ const Navbar = () => {
 
                 <div className="navbar-actions">
 
-                    {admin ? (
+                    {isAdmin ? (
                         <div className="navbar-user-wrapper hover-wrapper">
 
                             <div className="navbar-user">
