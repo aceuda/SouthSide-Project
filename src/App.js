@@ -1,6 +1,6 @@
 // src/App.js
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import AdminNavbar from "./components/layout/AdminNavbar";
 import Footer from "./components/layout/Footer";
@@ -25,14 +25,28 @@ import OrdersPage from "./pages/OrdersPage";
 import FavouritesPage from "./pages/FavouritesPage";
 import SettingsPage from "./pages/SettingsPage";
 
+// Protected Route Component for Admin
+const AdminRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = user.role === "admin";
+
+  if (!isAdmin) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
 const App = () => {
   const location = useLocation();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminUser = user.role === "admin";
 
   return (
     <CartProvider>
       <div className="app">
-        {isAdminRoute ? <AdminNavbar /> : <Navbar />}
+        {isAdminRoute && isAdminUser ? <AdminNavbar /> : <Navbar />}
         <main className="app-main">
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -53,9 +67,12 @@ const App = () => {
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/shipping" element={<ShippingPage />} />
             <Route path="/returns" element={<ReturnPolicyPage />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/orders" element={<AdminOrders />} />
-            <Route path="/admin/products" element={<AdminProducts />} />
+
+            {/* Protected Admin Routes */}
+            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
+            <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           </Routes>
         </main>
         <Footer />
