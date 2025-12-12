@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { secureStorage } from "../utils/secureStorage";
 
 const CartContext = createContext();
 
@@ -9,33 +10,44 @@ export const CartProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const getUserId = () => {
-        const user = localStorage.getItem("user");
-        if (user) {
-            try {
-                const parsed = JSON.parse(user);
-                return parsed.id;
-            } catch (e) {
-                console.error("Failed to parse user:", e);
-                return null;
-            }
+        const user = secureStorage.getItem("user");
+        if (user && user.id) {
+            return user.id;
         }
         return null;
+    };
+
+    const getUserRole = () => {
+        const user = secureStorage.getItem("user");
+        return user?.role || null;
     };
 
     const userId = getUserId();
 
     const hasSession = () => {
-        const user = localStorage.getItem("user");
-        const admin = localStorage.getItem("admin");
-        return !!(user || admin);
+        const user = secureStorage.getItem("user");
+        return !!user;
     };
 
     // Fetch cart on mount
     useEffect(() => {
-        fetchCart();
+        // Don't fetch cart for admin users
+        if (getUserRole() !== "admin") {
+            fetchCart();
+        } else {
+            setCart({ items: [], totalAmount: 0 });
+            setLoading(false);
+        }
     }, []);
 
     const fetchCart = async () => {
+        // Skip cart operations for admin users
+        if (getUserRole() === "admin") {
+            setCart({ items: [], totalAmount: 0 });
+            setLoading(false);
+            return;
+        }
+
         if (!hasSession()) {
             setCart({ items: [], totalAmount: 0 });
             setLoading(false);

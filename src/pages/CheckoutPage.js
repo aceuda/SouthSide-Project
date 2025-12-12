@@ -11,6 +11,7 @@ const CheckoutPage = () => {
     const navigate = useNavigate();
     const [paymentMethod, setPaymentMethod] = useState("card");
     const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState("");
     const [form, setForm] = useState({
         fullName: "",
         address: "",
@@ -60,10 +61,12 @@ const CheckoutPage = () => {
             // Force refresh cart to ensure it's cleared
             await fetchCart();
 
-            alert(`Order #${order.id} placed successfully!`);
+            setSuccess(`Order #${order.id} placed successfully! Redirecting to your orders...`);
 
-            // Redirect to orders page
-            navigate("/orders");
+            // Redirect to orders page after showing success message
+            setTimeout(() => {
+                navigate("/orders");
+            }, 2000);
         } catch (error) {
             console.error("Error creating order:", error);
             alert("There was an error placing the order. Please try again.");
@@ -75,6 +78,11 @@ const CheckoutPage = () => {
     return (
         <Section title="Checkout">
             <div className="checkout-page">
+                {success && (
+                    <div className="checkout-success-notification">
+                        ✓ {success}
+                    </div>
+                )}
                 <form className="checkout-form" onSubmit={handleSubmit}>
                     <h3>Shipping Information</h3>
                     <Input

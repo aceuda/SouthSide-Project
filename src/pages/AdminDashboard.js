@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
+import { secureStorage } from "../utils/secureStorage";
 import "../css/AdminDashboard.css";
 
 const API_BASE_URL = "http://localhost:8080/api";
@@ -15,14 +16,9 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         // Load admin display name (adjust to your auth store as needed)
-        const storedAdmin = localStorage.getItem("admin");
-        if (storedAdmin) {
-            try {
-                const parsed = JSON.parse(storedAdmin);
-                if (parsed?.name) setAdminName(parsed.name);
-            } catch (_) {
-                setAdminName("Admin");
-            }
+        const storedAdmin = secureStorage.getItem("user");
+        if (storedAdmin && storedAdmin.name) {
+            setAdminName(storedAdmin.name);
         }
     }, []);
 

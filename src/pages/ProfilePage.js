@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import { secureStorage } from "../utils/secureStorage";
 import "../css/ProfilePage.css";
 
 const ProfilePage = () => {
@@ -14,14 +15,13 @@ const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = secureStorage.getItem("user");
         if (storedUser) {
-            const userData = JSON.parse(storedUser);
             setUser({
-                name: userData.name || "",
-                email: userData.email || "",
-                phone: userData.phone || "",
-                address: userData.address || ""
+                name: storedUser.name || "",
+                email: storedUser.email || "",
+                phone: storedUser.phone || "",
+                address: storedUser.address || ""
             });
         }
     }, []);
@@ -34,9 +34,9 @@ const ProfilePage = () => {
     };
 
     const handleSave = () => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const storedUser = secureStorage.getItem("user");
         const updatedUser = { ...storedUser, ...user };
-        localStorage.setItem("user", JSON.stringify(updatedUser));
+        secureStorage.setItem("user", updatedUser);
         setIsEditing(false);
     };
 

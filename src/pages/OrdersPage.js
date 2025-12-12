@@ -3,23 +3,20 @@ import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import { Link } from "react-router-dom";
+import { secureStorage } from "../utils/secureStorage";
 import "../css/OrdersPage.css";
 
 const OrdersPage = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [notification, setNotification] = useState("");
 
     useEffect(() => {
-        // Get actual user ID from localStorage
-        const user = localStorage.getItem("user");
+        // Get actual user ID from secureStorage
+        const user = secureStorage.getItem("user");
         let userId = null;
-        if (user) {
-            try {
-                const parsed = JSON.parse(user);
-                userId = parsed.id;
-            } catch (e) {
-                console.error("Failed to parse user:", e);
-            }
+        if (user && user.id) {
+            userId = user.id;
         }
 
         if (!userId) {
@@ -76,7 +73,8 @@ const OrdersPage = () => {
                         o.id === order.id ? { ...o, status: "Delivered" } : o
                     )
                 );
-                alert("Order marked as received!");
+                setNotification("Order marked as received!");
+                setTimeout(() => setNotification(""), 3000);
             })
             .catch((error) => {
                 console.error("Error updating order status:", error);
@@ -127,6 +125,11 @@ const OrdersPage = () => {
     return (
         <Section title="My Orders">
             <div className="orders-page">
+                {notification && (
+                    <div className="order-notification">
+                        ✓ {notification}
+                    </div>
+                )}
                 {loading ? (
                     <div className="orders-loading">
                         <p>Loading your orders...</p>

@@ -1,10 +1,11 @@
 // src/App.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import AdminNavbar from "./components/layout/AdminNavbar";
 import Footer from "./components/layout/Footer";
 import { CartProvider } from "./context/CartContext";
+import { secureStorage, clearOldUserData } from "./utils/secureStorage";
 
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
@@ -27,8 +28,8 @@ import SettingsPage from "./pages/SettingsPage";
 
 // Protected Route Component for Admin
 const AdminRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
+  const user = secureStorage.getItem("user");
+  const isAdmin = user && user.role === "admin";
 
   if (!isAdmin) {
     return <Navigate to="/login" replace />;
@@ -39,9 +40,14 @@ const AdminRoute = ({ children }) => {
 
 const App = () => {
   const location = useLocation();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = secureStorage.getItem("user");
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const isAdminUser = user.role === "admin";
+  const isAdminUser = user && user.role === "admin";
+
+  // Clear old unencrypted data on first load
+  useEffect(() => {
+    clearOldUserData();
+  }, []);
 
   return (
     <CartProvider>
