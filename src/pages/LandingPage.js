@@ -32,7 +32,7 @@ const productImages = [
 ];
 
 const LandingPage = () => {
-    const { addItem } = useCart();
+    const { addToCart } = useCart();
     const navigate = useNavigate();
     const [addedItems, setAddedItems] = useState({});
     const [notification, setNotification] = useState(null);
@@ -49,18 +49,24 @@ const LandingPage = () => {
         navigate("/shop");
     };
 
-    const handleAddToCart = (product) => {
-        addItem(product);
-        
-        // Show notification
-        setNotification(`${product.name} added to cart!`);
-        setTimeout(() => setNotification(null), 3000);
+    const handleAddToCart = async (product) => {
+        try {
+            await addToCart(product.id, 1);
 
-        // Show "Added!" on button
-        setAddedItems(prev => ({ ...prev, [product.id]: true }));
-        setTimeout(() => {
-            setAddedItems(prev => ({ ...prev, [product.id]: false }));
-        }, 2000);
+            // Show notification
+            setNotification(`${product.name} added to cart!`);
+            setTimeout(() => setNotification(null), 3000);
+
+            // Show "Added!" on button
+            setAddedItems(prev => ({ ...prev, [product.id]: true }));
+            setTimeout(() => {
+                setAddedItems(prev => ({ ...prev, [product.id]: false }));
+                navigate("/cart");
+            }, 1000);
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            alert("Please login to add items to cart");
+        }
     };
 
     return (
@@ -71,7 +77,7 @@ const LandingPage = () => {
                     ✓ {notification}
                 </div>
             )}
-            
+
             {/* Hero section */}
             <section className="hero">
                 <div className="hero-content">
@@ -104,7 +110,7 @@ const LandingPage = () => {
                                     <span className="product-tag">{p.tag}</span>
                                 </div>
                                 <p className="product-price">₱{p.price}</p>
-                                <Button 
+                                <Button
                                     onClick={() => handleAddToCart(p)}
                                     disabled={addedItems[p.id]}
                                     className={addedItems[p.id] ? 'button-added' : ''}
