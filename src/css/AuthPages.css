@@ -3,6 +3,11 @@
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     gap: 32px;
+    margin-top: 70px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
     margin-top: 40px;
     align-items: center;
 }
@@ -55,6 +60,26 @@
     text-decoration: underline;
     cursor: pointer;
     color: var(--text);
+}
+
+.auth-error {
+    padding: 12px;
+    margin-bottom: 16px;
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    color: #c33;
+    font-size: 0.9rem;
+}
+
+.auth-success {
+    padding: 12px;
+    margin-bottom: 16px;
+    background-color: #efe;
+    border: 1px solid #cfc;
+    border-radius: 8px;
+    color: #3a3;
+    font-size: 0.9rem;
 }
 
 /* ✔ RIGHT SIDE IMAGE BLOCK WITH YOUR URL */
