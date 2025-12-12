@@ -22,6 +22,7 @@ const MenuPage = () => {
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
     const [addingToCart, setAddingToCart] = useState(null);
+    const [notification, setNotification] = useState(null);
 
     // React state to hold products from Spring Boot
     const [products, setProducts] = useState([]);
@@ -81,8 +82,12 @@ const MenuPage = () => {
         }
         setAddingToCart(productId);
         try {
+            const product = products.find(p => p.id === productId);
             await addToCart(productId, 1);
-            alert("Added to cart!");
+
+            // Show notification
+            setNotification(`${product?.name || 'Item'} added to cart!`);
+            setTimeout(() => setNotification(null), 3000);
         } catch (error) {
             alert("Failed to add to cart. Please try again.");
         } finally {
@@ -133,6 +138,13 @@ const MenuPage = () => {
 
     return (
         <Section title="Shop">
+            {/* Notification */}
+            {notification && (
+                <div className="cart-notification">
+                    ✓ {notification}
+                </div>
+            )}
+
             {showLoginPrompt && (
                 <div className="login-modal-backdrop" onClick={() => setShowLoginPrompt(false)}>
                     <div className="login-modal" onClick={(e) => e.stopPropagation()}>
@@ -165,11 +177,15 @@ const MenuPage = () => {
                     <Card key={p.id} className="menu-product-card">
                         <Link to={`/product/${p.id}`}>
                             <div className="menu-product-image">
-                                {p.image ? (
-                                    <img src={p.image} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                                ) : (
-                                    <span>No Image</span>
-                                )}
+                                {p.image && p.image.trim() !== "" ? (
+                                    <img
+                                        src={p.image.startsWith('data:image') ? p.image : `data:image/jpeg;base64,${p.image}`}
+                                        alt={p.name}
+                                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                                    />
+                                ) : null}
+                                <div style={{ display: p.image && p.image.trim() !== "" ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#f0f0f0', color: '#999' }}>No Image</div>
                             </div>
                         </Link>
 
