@@ -12,6 +12,7 @@ const SignupPage = () => {
     });
 
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e) =>
@@ -19,6 +20,22 @@ const SignupPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+
+        // Validate required fields
+        if (!form.name || !form.email || !form.password) {
+            setError("Please fill in all fields");
+            return;
+        }
+
+        // Validate password length
+        if (form.password.length < 8) {
+            setError("Password must be at least 8 characters long");
+            return;
+        }
+
+        console.log("Attempting signup with:", { name: form.name, email: form.email });
 
         // Send signup request to backend
         fetch("http://localhost:8080/api/users/signup", {
@@ -26,18 +43,29 @@ const SignupPage = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form),
         })
-            .then((res) => res.text())
-            .then((msg) => {
-                console.log("SIGNUP RESPONSE:", msg);
+            .then((res) => {
+                console.log("Response status:", res.status);
+                return res.json();
+            })
+            .then((data) => {
+                console.log("SIGNUP RESPONSE:", data);
 
-                if (msg === "Email already exists") {
-                    setError(msg);
+                if (data.success === false) {
+                    setError(data.message || "This email is already registered. Please use a different email or login.");
                     return;
                 }
 
-                if (msg === "Signup successful") {
-                    alert("Account created successfully!");
-                    navigate("/login"); // redirect to login page
+                if (data.success === true) {
+                    setSuccess(data.message || "Account created successfully! Redirecting to login...");
+
+                    // Redirect to login page after showing success message
+                    setTimeout(() => {
+                        navigate("/login");
+                    }, 2000);
+                } else {
+                    // Log unexpected response
+                    console.error("Unexpected response:", data);
+                    setError("Unexpected response from server. Please try again.");
                 }
             })
             .catch((err) => {
@@ -56,6 +84,9 @@ const SignupPage = () => {
 
                 {/* Error Message */}
                 {error && <p className="auth-error">{error}</p>}
+
+                {/* Success Message */}
+                {success && <p className="auth-success">{success}</p>}
 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <Input
@@ -86,7 +117,7 @@ const SignupPage = () => {
                 </p>
             </div>
 
-            <div className="auth-side-image">Street Photo</div>
+            <div className="auth-side-image"></div>
         </div>
     );
 };
