@@ -8,6 +8,7 @@
     margin-left: auto;
     margin-right: auto;
     padding: 0 20px;
+    margin-top: 40px;
     align-items: center;
 }
 
@@ -85,6 +86,7 @@
 .auth-side-image {
     border-radius: 18px;
     min-height: 320px;
+    margin-top: 80px;
 
     background-image: url("https://pps.innovatureinc.com/wp-content/uploads/2023/07/6.jpg");
     background-size: cover;
