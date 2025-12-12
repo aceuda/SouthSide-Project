@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { secureStorage } from "../../utils/secureStorage";
 import "../../css/AdminNavbar.css";
 
 const AdminNavbar = () => {
@@ -9,19 +10,14 @@ const AdminNavbar = () => {
     const { resetCart } = useCart();
 
     useEffect(() => {
-        const storedAdmin = localStorage.getItem("admin");
-        if (storedAdmin) {
-            try {
-                const parsed = JSON.parse(storedAdmin);
-                setAdmin({ name: parsed?.name || "Admin" });
-            } catch (_) {
-                setAdmin({ name: "Admin" });
-            }
+        const storedAdmin = secureStorage.getItem("user");
+        if (storedAdmin && storedAdmin.name) {
+            setAdmin({ name: storedAdmin.name });
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("user");
+        secureStorage.removeItem("user");
         resetCart();
         setAdmin({ name: "Admin" });
         window.location.href = "/";

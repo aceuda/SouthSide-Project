@@ -4,6 +4,7 @@ import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import { useCart } from "../context/CartContext";
+import { secureStorage } from "../utils/secureStorage";
 import "../css/MenuPage.css";
 
 const categories = [
@@ -29,14 +30,9 @@ const MenuPage = () => {
 
     // Get current user ID
     const getUserId = () => {
-        const user = localStorage.getItem("user");
-        if (user) {
-            try {
-                const parsed = JSON.parse(user);
-                return parsed.id;
-            } catch (e) {
-                return null;
-            }
+        const user = secureStorage.getItem("user");
+        if (user && user.id) {
+            return user.id;
         }
         return null;
     };

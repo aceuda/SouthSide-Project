@@ -5,6 +5,31 @@
     margin-top: 10px;
 }
 
+.checkout-success-notification {
+    grid-column: 1 / -1;
+    padding: 16px 20px;
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 12px;
+    color: #155724;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .checkout-form {
     border-radius: 16px;
     border: 1px solid var(--border);

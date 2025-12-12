@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import CartIcon from "../cart/CartIcon";
 import { useCart } from "../../context/CartContext";
+import { secureStorage } from "../../utils/secureStorage";
 import "../../css/Navbar.css";
 
 const Navbar = () => {
@@ -11,8 +12,8 @@ const Navbar = () => {
     const { resetCart } = useCart();
 
     const loadAuthFromStorage = useCallback(() => {
-        const storedUser = localStorage.getItem("user");
-        setUser(storedUser ? JSON.parse(storedUser) : null);
+        const storedUser = secureStorage.getItem("user");
+        setUser(storedUser || null);
     }, []);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ const Navbar = () => {
     }, [location.pathname, loadAuthFromStorage]);
 
     const handleLogout = () => {
-        localStorage.removeItem("user");
+        secureStorage.removeItem("user");
         resetCart();
         setUser(null);
         navigate("/login");

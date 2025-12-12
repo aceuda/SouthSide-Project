@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import { secureStorage } from "../utils/secureStorage";
 import "../css/AuthPages.css";
 
 const LoginPage = () => {
     const [form, setForm] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const handleForgotPassword = () => {
@@ -22,6 +24,8 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
 
         fetch("http://localhost:8080/api/users/login", {
             method: "POST",
@@ -38,15 +42,17 @@ const LoginPage = () => {
                 }
 
                 if (data.id) {
-                    localStorage.setItem("user", JSON.stringify(data));
-                    alert("Login successful!");
+                    secureStorage.setItem("user", data);
+                    setSuccess("Login successful! Redirecting...");
 
-                    // Redirect based on user role
-                    if (data.role === "admin") {
-                        navigate("/admin/dashboard");
-                    } else {
-                        navigate("/");
-                    }
+                    // Redirect based on user role after brief delay
+                    setTimeout(() => {
+                        if (data.role === "admin") {
+                            navigate("/admin/dashboard");
+                        } else {
+                            navigate("/");
+                        }
+                    }, 1500);
                 }
             })
             .catch((err) => {
@@ -64,6 +70,7 @@ const LoginPage = () => {
                 </p>
 
                 {error && <p className="auth-error">{error}</p>}
+                {success && <p className="auth-success">{success}</p>}
 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <Input
