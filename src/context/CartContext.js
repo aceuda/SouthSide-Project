@@ -86,9 +86,11 @@ export const CartProvider = ({ children }) => {
             });
 
             if (response.ok) {
-                // Refresh cart to get the latest data with all items
-                await fetchCart();
-                return cart;
+                // Get the updated cart from the response
+                const updatedCart = await response.json();
+                console.log("Cart after adding item:", updatedCart);
+                setCart(updatedCart);
+                return updatedCart;
             } else {
                 const error = await response.text();
                 console.error("Failed to add to cart:", error);
@@ -211,7 +213,7 @@ export const CartProvider = ({ children }) => {
         resetCart,
         isAuthenticated: hasSession(),
         cartItemCount: cart?.items?.length || 0,
-        cartTotal: cart?.totalAmount || 0,
+        cartTotal: cart?.items?.reduce((total, item) => total + (item.price * item.quantity), 0) || 0,
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -13,6 +13,12 @@ const CartPage = () => {
         fetchCart();
     }, []);
 
+    // Debug logging
+    useEffect(() => {
+        console.log("Cart items count:", items?.length);
+        console.log("Cart items:", items);
+    }, [items]);
+
     if (loading) {
         return (
             <Section title="Bag">
